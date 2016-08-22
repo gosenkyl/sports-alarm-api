@@ -1,6 +1,8 @@
 package com.gosenk.sports.alarm.api.dso;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.BeanUtils;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -35,6 +37,10 @@ public class Game extends BaseEntity{
     @JsonIgnore
     public Team getOpponentTeam() {
         return opponentTeam;
+    }
+
+    public String getOpponentTeamId(){
+        return opponentTeam.getId();
     }
 
     public void setOpponentTeam(Team opponentTeam) {
