@@ -1,0 +1,10 @@
+jar {
+    baseName = 'sports-alarm-api'
+    version =  '1.0.0'
+}
+
+dependencies {
+    compile project(':common')
+
+    compile("org.springframework.boot:spring-boot-starter-web")
+}

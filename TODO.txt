@@ -1,0 +1,13 @@
+
+Add Logger
+    - switch System.out to info logs
+
+
+
+Add flag to team
+    - if new team is created by the data processor, set to true, alert me
+    - manually update details (colors, icon, etc.)/make sure "new" team is actually valid and not a parsing error
+    - "new" teams are not shown until manually set to new = false
+
+
+Command Line Params

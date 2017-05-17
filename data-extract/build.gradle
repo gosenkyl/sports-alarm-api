@@ -1,0 +1,17 @@
+jar {
+    baseName = 'sports-alarm-data-extract'
+    version =  '1.0.0'
+}
+
+springBoot {
+    mainClass = "com.gosenk.sports.alarm.dataextract.DataExtractApplication"
+}
+
+dependencies {
+    compile project(':common')
+
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter'
+    compile group: 'org.springframework', name: 'spring-web'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.5'
+    compile group: 'org.json', name: 'json', version: '20160810'
+}

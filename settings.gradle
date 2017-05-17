@@ -1,2 +1,4 @@
 rootProject.name = 'sports-alarm-api'
-
+include 'api'
+include 'common'
+include 'data-extract'
