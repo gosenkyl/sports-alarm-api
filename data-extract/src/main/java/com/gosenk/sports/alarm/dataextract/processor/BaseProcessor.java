@@ -3,7 +3,6 @@ package com.gosenk.sports.alarm.dataextract.processor;
 import com.gosenk.sports.alarm.common.entity.Game;
 import com.gosenk.sports.alarm.common.entity.League;
 import com.gosenk.sports.alarm.common.entity.Team;
-import com.gosenk.sports.alarm.common.object.ProcessorResult;
 import com.gosenk.sports.alarm.common.repository.GameRepository;
 import com.gosenk.sports.alarm.common.repository.LeagueRepository;
 import com.gosenk.sports.alarm.common.repository.TeamRepository;
@@ -26,47 +25,33 @@ public abstract class BaseProcessor {
         return leagueRepository.findOne(id);
     }
 
-    protected Team getOrCreateTeam(League league, String identifier){
+    protected Team getOrCreateTeam(League league, String identifier, String city, String mascot){
         String leagueId = league.getId();
         List<Team> teams = teamRepository.findByLeagueIdentifier(leagueId, identifier);
-
-        if(teams != null && teams.size() > 0){
-            if(teams.size() > 1){
-                System.out.println(String.format("MORE THAN 1 TEAM FOUND FOR %s %s", leagueId, identifier));
-            }
-
-            return teams.get(0);
-        }
-
-        System.out.println(String.format("CREATING NEW TEAM FOR %s %s", leagueId, identifier));
-
-        Team team = new Team();
-        team.setLeague(league);
-        team.setIdentifier(identifier);
-
-        teamRepository.save(team);
-
-        return team;
-    }
-
-    protected Team getOrCreateTeam(League league, String city, String mascot){
-        String leagueId = league.getId();
-        List<Team> teams = teamRepository.findByLeagueCityMascot(leagueId, city, mascot);
 
         if(teams != null && teams.size() > 0){
             if(teams.size() > 1){
                 System.out.println(String.format("MORE THAN 1 TEAM FOUND FOR %s %s %s", leagueId, city, mascot));
             }
 
+            // TODO - Is there a need to check for City/Mascot change or is a new team created?
             return teams.get(0);
         }
 
         System.out.println(String.format("CREATING NEW TEAM FOR %s %s %s", leagueId, city, mascot));
 
         Team team = new Team();
+
+        team.setNew(true);
         team.setLeague(league);
+        team.setIdentifier(identifier);
+
+        // TODO - Remove these 2 lines, should be manual for NEW teams to fix things like Chi White Sox as city for Chicago - White Sox
         team.setCity(city);
         team.setMascot(mascot);
+
+        team.setOriginCity(city);
+        team.setOriginMascot(mascot);
 
         teamRepository.save(team);
 
@@ -86,13 +71,13 @@ public abstract class BaseProcessor {
         return null;
     }
 
-    protected Game createGame(League league, String gameIdentifier, String homeTeamId, String awayTeamId, long dateTime){
+    protected Game createGame(League league, String gameIdentifier, Team homeTeam, Team awayTeam, long dateTime){
         Game game = new Game();
 
         game.setLeague(league);
         game.setIdentifier(gameIdentifier);
-        game.setHomeTeam(getOrCreateTeam(league, homeTeamId));
-        game.setAwayTeam(getOrCreateTeam(league, awayTeamId));
+        game.setHomeTeam(homeTeam);
+        game.setAwayTeam(awayTeam);
         game.setDateTime(dateTime);
 
         gameRepository.save(game);

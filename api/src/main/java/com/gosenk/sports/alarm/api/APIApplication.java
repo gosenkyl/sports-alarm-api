@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = {"com.gosenk.sports.alarm.common.repository"})
-@ComponentScan("com.gosenk.sports.alarm.common")
+@ComponentScan("com.gosenk.sports.alarm")
 @EntityScan(basePackages = "com.gosenk.sports.alarm.common.entity")
 public class APIApplication {
     public static void main(String[] args) {

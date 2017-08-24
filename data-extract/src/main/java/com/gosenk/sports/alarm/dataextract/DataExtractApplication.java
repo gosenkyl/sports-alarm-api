@@ -1,8 +1,11 @@
 package com.gosenk.sports.alarm.dataextract;
 
+import com.gosenk.sports.alarm.common.entity.DataReport;
+import com.gosenk.sports.alarm.common.repository.DataReportRepository;
 import com.gosenk.sports.alarm.dataextract.processor.MLBProcessor;
 import com.gosenk.sports.alarm.dataextract.processor.NFLProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -27,42 +30,42 @@ public class DataExtractApplication implements CommandLineRunner {
     @Autowired
     private MLBProcessor mlbProcessor;
 
+    @Autowired
+    private DataReportRepository dataReportRepository;
+
     @Override
     public void run(String... args) throws Exception {
-        if(StringUtils.isEmpty(args)){
+
+        String leagues = args[0];
+
+        System.out.println("Arguments " + leagues);
+
+        if(StringUtils.isEmpty(leagues)){
+            System.out.println("No Arg Passed!");
             throw new RuntimeException("Need param [nfl,mlb]");
         }
 
-        String arg1 = "mlb"; //args[0];
+        for(String league : leagues.split(",")) {
 
-        System.out.println(String.format("Processing %s", arg1));
+            System.out.println(String.format("Processing %s", league));
 
-        int results;
+            DataReport dataReport;
 
-        switch(arg1){
-            case "nfl":
-                results = processNFL();
-                break;
-            case "mlb":
-                results = processMLB();
-                break;
-            default:
-                throw new RuntimeException("param not nfl/mlb");
+            switch (league.toUpperCase()) {
+                case "NFL":
+                    dataReport = nflProcessor.process();
+                    break;
+                case "MLB":
+                    dataReport = mlbProcessor.process();
+                    break;
+                default:
+                    throw new RuntimeException(String.format("LEAGUE NOT FOUND %s", league));
+            }
+
+            if(dataReport != null){
+                dataReportRepository.save(dataReport);
+                System.out.println(String.format("PROCESSED [%d NEW] [%d UPDATE] [%d TOTAL] RECORDS FOR %s", dataReport.getInsertCount(), dataReport.getUpdateCount(), dataReport.getTotalCount(), league));
+            }
         }
-
-        System.out.println(String.format("PROCESSED %s RECORDS FOR %s", results, arg1));
     }
-
-    private int processNFL(){
-        nflProcessor.process();
-
-        return 0;
-    }
-
-    private int processMLB(){
-        mlbProcessor.process();
-
-        return 0;
-    }
-
 }

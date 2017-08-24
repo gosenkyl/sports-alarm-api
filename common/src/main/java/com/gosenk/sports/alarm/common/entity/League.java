@@ -15,6 +15,9 @@ public class League extends BaseEntity {
     @Column(name="parse_to_date")
     private Date parseToDate;
 
+    @Column(name = "sequence")
+    private int sequence;
+
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "league")
     @OrderBy("city, mascot")
     private Set<Team> teams = new HashSet<>(0);
@@ -33,6 +36,10 @@ public class League extends BaseEntity {
 
     public void setParseToDate(Date parseToDate) {
         this.parseToDate = parseToDate;
+    }
+
+    public int getSequence() {
+        return sequence;
     }
 
     public Set<Team> getTeams() {

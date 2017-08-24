@@ -8,6 +8,9 @@ import java.util.List;
 
 public interface TeamRepository extends CrudRepository<Team, String>{
 
+    @Query("SELECT t FROM Team t WHERE t.league.id = ?1")
+    List<Team> findByLeague(String leagueId);
+
     @Query("SELECT t FROM Team t WHERE t.league.id = ?1 AND t.city = ?2 AND t.mascot = ?3")
     List<Team> findByLeagueCityMascot(String leagueId, String city, String mascot);
 

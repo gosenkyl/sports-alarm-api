@@ -11,3 +11,8 @@ Add flag to team
 
 
 Command Line Params
+
+-- gradle clean bootRun
+OR
+-- gradle clean build
+-- java -jar [jar_name].jar

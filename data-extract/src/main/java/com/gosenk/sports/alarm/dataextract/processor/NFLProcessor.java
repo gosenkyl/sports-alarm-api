@@ -2,9 +2,11 @@ package com.gosenk.sports.alarm.dataextract.processor;
 
 import com.gosenk.sports.alarm.common.entity.Game;
 import com.gosenk.sports.alarm.common.entity.League;
-import com.gosenk.sports.alarm.common.object.ProcessorResult;
+import com.gosenk.sports.alarm.common.entity.Team;
+import com.gosenk.sports.alarm.common.entity.DataReport;
 import com.gosenk.sports.alarm.common.repository.GameRepository;
 import com.gosenk.sports.alarm.dataextract.util.XMLParser;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
@@ -16,8 +18,7 @@ import javax.annotation.PostConstruct;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Calendar;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.Date;
 import java.util.TimeZone;
 
 @Service
@@ -33,9 +34,6 @@ public class NFLProcessor extends BaseProcessor implements Processor {
 
     private static String baseURL = "http://www.nfl.com/ajax/scorestrip?season=:YEAR&seasonType=:TYPE&week=:WEEK";
 
-    @Autowired
-    private GameRepository gameRepository;
-
     private League league = null;
 
     @PostConstruct
@@ -43,13 +41,15 @@ public class NFLProcessor extends BaseProcessor implements Processor {
         this.league = getLeague(leagueId);
     }
 
-    public ProcessorResult process(){
+    public DataReport process(){
 
         if(league == null){
             throw new RuntimeException(String.format("LEAGUE %s NOT FOUND", leagueId));
         }
 
-        ProcessorResult result = new ProcessorResult(league.getId());
+        DataReport result = new DataReport();
+        result.setLeague(league);
+        result.setDate(new Date());
 
         URL url;
         URLConnection connection;
@@ -109,12 +109,11 @@ public class NFLProcessor extends BaseProcessor implements Processor {
                         String time = nodeMap.getNamedItem("t").getNodeValue();
                         String amPM = nodeMap.getNamedItem("q").getNodeValue();
 
-                        String homeIdentifier = nodeMap.getNamedItem("h").getNodeValue();
-                        String awayIdentifier = nodeMap.getNamedItem("v").getNodeValue();
-
                         Long dateTimeMillis = parseTime(eid, time, amPM);
 
                         Game game = getGame(league, gameIdentifier);
+
+                        result.incTotalCount();
 
                         // Make sure nothing changed
                         if(game != null){
@@ -122,10 +121,19 @@ public class NFLProcessor extends BaseProcessor implements Processor {
                                 result.incUpdateCount();
                             }
                         } else {
-                            game = createGame(league, gameIdentifier, homeIdentifier, awayIdentifier, dateTimeMillis);
+                            String homeTeamCity = nodeMap.getNamedItem("h").getNodeValue();
+                            String homeTeamMascot = nodeMap.getNamedItem("hnn").getNodeValue();
+                            String awayTeamCity = nodeMap.getNamedItem("v").getNodeValue();
+                            String awayTeamMascot = nodeMap.getNamedItem("vnn").getNodeValue();
+
+                            Team homeTeam = getOrCreateTeam(league, homeTeamCity, homeTeamCity, homeTeamMascot);
+                            Team awayTeam = getOrCreateTeam(league, awayTeamCity, awayTeamCity, awayTeamMascot);
+
+                            game = createGame(league, gameIdentifier, homeTeam, awayTeam, dateTimeMillis);
                             result.incInsertCount();
                         }
 
+                        System.out.println(game.getHomeTeam().getIdentifier() + " vs " + game.getAwayTeam().getIdentifier());
                     }
 
                     week++;
@@ -143,9 +151,9 @@ public class NFLProcessor extends BaseProcessor implements Processor {
         Long dateTimeMillis = null;
 
         try{
-            int year = Integer.parseInt(eid.substring(0, 3));
-            int month = Integer.parseInt(eid.substring(4, 5));
-            int day = Integer.parseInt(eid.substring(6, 7));
+            int year = Integer.parseInt(eid.substring(0, 4));
+            int month = Integer.parseInt(eid.substring(4, 6));
+            int day = Integer.parseInt(eid.substring(6, 8));
 
             String[] timeParts = time.split(":");
 
@@ -157,11 +165,14 @@ public class NFLProcessor extends BaseProcessor implements Processor {
             cal.setTimeZone(TimeZone.getTimeZone("America/New_York"));
 
             cal.set(Calendar.YEAR, year);
-            cal.set(Calendar.MONTH, month);
+            cal.set(Calendar.MONTH, month - 1);
             cal.set(Calendar.DAY_OF_MONTH, day);
 
             cal.set(Calendar.HOUR, hour);
             cal.set(Calendar.MINUTE, minute);
+
+            cal.set(Calendar.SECOND, 0);
+            cal.set(Calendar.MILLISECOND, 0);
 
             if("P".equalsIgnoreCase(amPM)) {
                 cal.set(Calendar.AM_PM, Calendar.PM);
@@ -177,7 +188,7 @@ public class NFLProcessor extends BaseProcessor implements Processor {
         return dateTimeMillis;
     }
 
-    private void currentWeek() throws Exception {
+    /*private void currentWeek() throws Exception {
         // Current NFL week
         URL url = new URL("http://www.nfl.com/liveupdate/scorestrip/ss.xml");
         URLConnection connection = url.openConnection();
@@ -190,6 +201,6 @@ public class NFLProcessor extends BaseProcessor implements Processor {
         String curYear = curNodeMap.getNamedItem("y").getNodeValue();
 
         System.out.println("Current Week: " + curWeek + " Year: " + curYear);
-    }
+    }*/
 
 }

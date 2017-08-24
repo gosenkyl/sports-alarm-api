@@ -27,11 +27,23 @@ public class Team extends BaseEntity{
     @Column(name = "mascot")
     private String mascot;
 
+    @Column(name = "origin_city")
+    private String originCity;
+
+    @Column(name = "origin_mascot")
+    private String originMascot;
+
     @Column(name = "primary_color")
     private String primaryColor;
 
     @Column(name = "secondary_color")
     private String secondaryColor;
+
+    @Column(name = "is_new")
+    private boolean isNew;
+
+    @Column(name = "image")
+    private String image;
 
     /*@OneToMany(fetch = FetchType.EAGER, mappedBy = "team")
     //@JoinColumn(name = "id", referencedColumnName = "team_id")
@@ -58,6 +70,10 @@ public class Team extends BaseEntity{
         this.league = league;
     }
 
+    public String getLeagueId(){
+        return this.league.getId();
+    }
+
     public String getCity() {
         return city;
     }
@@ -74,6 +90,22 @@ public class Team extends BaseEntity{
         this.mascot = mascot;
     }
 
+    public String getOriginCity() {
+        return originCity;
+    }
+
+    public void setOriginCity(String originCity) {
+        this.originCity = originCity;
+    }
+
+    public String getOriginMascot() {
+        return originMascot;
+    }
+
+    public void setOriginMascot(String originMascot) {
+        this.originMascot = originMascot;
+    }
+
     public String getPrimaryColor() {
         return primaryColor;
     }
@@ -88,6 +120,22 @@ public class Team extends BaseEntity{
 
     public void setSecondaryColor(String secondaryColor) {
         this.secondaryColor = secondaryColor;
+    }
+
+    public boolean getIsNew() {
+        return isNew;
+    }
+
+    public void setNew(boolean aNew) {
+        isNew = aNew;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     /*public Set<Game> getSchedule() {
