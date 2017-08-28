@@ -45,12 +45,13 @@ public class Team extends BaseEntity{
     @Column(name = "image")
     private String image;
 
-    /*@OneToMany(fetch = FetchType.EAGER, mappedBy = "team")
-    //@JoinColumn(name = "id", referencedColumnName = "team_id")
-    @OrderBy("time")
-    private Set<Game> schedule = new HashSet<>(0);*/
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "homeTeam")
+    @OrderBy("dateTime")
+    private Set<Game> homeGames = new HashSet<>(0);
 
-
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "awayTeam")
+    @OrderBy("dateTime")
+    private Set<Game> awayGames = new HashSet<>(0);
 
 
     public String getIdentifier() {
@@ -138,11 +139,19 @@ public class Team extends BaseEntity{
         this.image = image;
     }
 
-    /*public Set<Game> getSchedule() {
-        return schedule;
+    public Set<Game> getHomeGames() {
+        return homeGames;
     }
 
-    public void setSchedule(Set<Game> schedule) {
-        this.schedule = schedule;
-    }*/
+    public void setHomeGames(Set<Game> homeGames) {
+        this.homeGames = homeGames;
+    }
+
+    public Set<Game> getAwayGames() {
+        return awayGames;
+    }
+
+    public void setAwayGames(Set<Game> awayGames) {
+        this.awayGames = awayGames;
+    }
 }

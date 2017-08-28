@@ -39,6 +39,7 @@ public class Game extends BaseEntity{
         this.identifier = identifier;
     }
 
+    @JsonIgnore
     public League getLeague() {
         return league;
     }
@@ -47,6 +48,7 @@ public class Game extends BaseEntity{
         this.league = league;
     }
 
+    @JsonIgnore
     public Team getHomeTeam() {
         return homeTeam;
     }
@@ -55,12 +57,21 @@ public class Game extends BaseEntity{
         this.homeTeam = homeTeam;
     }
 
+    public String getHomeTeamId(){
+        return getHomeTeam().getId();
+    }
+
+    @JsonIgnore
     public Team getAwayTeam() {
         return awayTeam;
     }
 
     public void setAwayTeam(Team awayTeam) {
         this.awayTeam = awayTeam;
+    }
+
+    public String getAwayTeamId(){
+        return getAwayTeam().getId();
     }
 
     public Long getDateTime() {
