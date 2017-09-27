@@ -1,6 +1,10 @@
 package com.gosenk.sports.alarm.common.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.gosenk.sports.alarm.common.util.BaseEntityDeserializer;
+import com.gosenk.sports.alarm.common.util.BaseEntitySerializer;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -53,9 +57,6 @@ public class Team extends BaseEntity{
     @OrderBy("dateTime")
     private Set<Game> awayGames = new HashSet<>(0);
 
-    @Transient
-    private String leagueId;
-
     public String getIdentifier() {
         return identifier;
     }
@@ -64,23 +65,17 @@ public class Team extends BaseEntity{
         this.identifier = identifier;
     }
 
-    @JsonIgnore
+    @JsonProperty("leagueId")
+    @JsonSerialize(using=BaseEntitySerializer.class)
     public League getLeague() {
         return league;
     }
 
+    @JsonProperty("leagueId")
+    @JsonDeserialize(using=BaseEntityDeserializer.class)
     public void setLeague(League league) {
         this.league = league;
     }
-
-    public String getLeagueId(){
-        if(this.league != null){
-            return this.league.getId();
-        }
-        return this.leagueId;
-    }
-
-    public void setLeagueId(String leagueId) { this.leagueId = leagueId; }
 
     public String getCity() {
         return city;

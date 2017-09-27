@@ -44,8 +44,6 @@ public class TeamResource {
 
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
     public Team update(@RequestBody Team team){
-        team.setLeague(leagueService.findOne(team.getLeagueId()));
-
         return teamService.save(team);
     }
 
