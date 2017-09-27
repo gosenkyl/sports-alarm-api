@@ -53,6 +53,8 @@ public class Team extends BaseEntity{
     @OrderBy("dateTime")
     private Set<Game> awayGames = new HashSet<>(0);
 
+    @Transient
+    private String leagueId;
 
     public String getIdentifier() {
         return identifier;
@@ -72,8 +74,13 @@ public class Team extends BaseEntity{
     }
 
     public String getLeagueId(){
-        return this.league.getId();
+        if(this.league != null){
+            return this.league.getId();
+        }
+        return this.leagueId;
     }
+
+    public void setLeagueId(String leagueId) { this.leagueId = leagueId; }
 
     public String getCity() {
         return city;

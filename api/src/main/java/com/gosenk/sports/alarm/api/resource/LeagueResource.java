@@ -1,7 +1,7 @@
 package com.gosenk.sports.alarm.api.resource;
 
 import com.gosenk.sports.alarm.common.entity.League;
-import com.gosenk.sports.alarm.common.repository.LeagueRepository;
+import com.gosenk.sports.alarm.common.service.LeagueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,11 +13,11 @@ import java.util.List;
 public class LeagueResource {
 
     @Autowired
-    private LeagueRepository leagueRepository;
+    private LeagueService leagueService;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public List<League> getAll(){
-        return (List) leagueRepository.findAll();
+        return leagueService.findAll();
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
@@ -25,7 +25,7 @@ public class LeagueResource {
         if (id == null) {
             return null;
         } else {
-            return leagueRepository.findOne(id);
+            return leagueService.findOne(id);
         }
     }
 
