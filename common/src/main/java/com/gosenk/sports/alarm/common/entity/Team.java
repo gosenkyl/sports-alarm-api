@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.gosenk.sports.alarm.common.util.BaseEntityDeserializer;
+import com.gosenk.sports.alarm.common.util.LeagueDeserializer;
 import com.gosenk.sports.alarm.common.util.BaseEntitySerializer;
 
 import javax.persistence.*;
@@ -72,7 +73,7 @@ public class Team extends BaseEntity{
     }
 
     @JsonProperty("leagueId")
-    @JsonDeserialize(using=BaseEntityDeserializer.class)
+    @JsonDeserialize(using= BaseEntityDeserializer.class)
     public void setLeague(League league) {
         this.league = league;
     }

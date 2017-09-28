@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class LeagueService extends BaseService<League, LeagueRepository>{
+public class LeagueService extends BaseServiceImpl<League, LeagueRepository> {
 
     @Autowired
     public LeagueService(LeagueRepository repository){

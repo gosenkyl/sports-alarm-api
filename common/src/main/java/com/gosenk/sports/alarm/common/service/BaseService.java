@@ -1,77 +1,30 @@
 package com.gosenk.sports.alarm.common.service;
 
 import com.gosenk.sports.alarm.common.entity.BaseEntity;
-import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
-import java.util.UUID;
 
-abstract class BaseService<T extends BaseEntity, R extends CrudRepository<T, String>> {
+public interface BaseService<T extends BaseEntity, R> {
 
-    private final R repository;
+    R getRepository();
 
-    @SuppressWarnings("WeakerAccess")
-    public BaseService(R repository) {
-        this.repository = repository;
-    }
+    T findById(String id);
 
-    public R getRepository() {
-        return repository;
-    }
+    List<T> findAll();
 
-    public T findById(String id) {
-        if (id == null) {
-            return null;
-        } else {
-            return getRepository().findOne(id);
-        }
-    }
+    T findOne(String id);
 
-    public List<T> findAll() {
-        return (List<T>) getRepository().findAll();
-    }
+    T save(T dso);
 
-    /*public List<T> findAll(){
-        return (List) getRepository().findAll();
-    }
+    List<T> save(Iterable<T> dsoList);
 
-    public Page<T> findAll(Pageable pageable){
-        return getRepository().findAll(pageable);
-    }*/
+    void delete(String id);
 
-    public T findOne(String id){
-        return getRepository().findOne(id);
-    }
+    void delete(T dso);
 
-    public T save(T dso) {
-        if (dso.getId() == null) {
-            dso.setId(UUID.randomUUID().toString());
-        }
-        return getRepository().save(dso);
-    }
+    void delete(List<T> dsoList);
 
-    public List<T> save(Iterable<T> dsoList){
-        return (List<T>) getRepository().save(dsoList);
-    }
+    void deleteAll();
 
-    public void delete(String id){
-        getRepository().delete(id);
-    }
-
-    public void delete(T dso) {
-        getRepository().delete(dso);
-    }
-
-    public void delete(List<T> dsoList){
-        getRepository().delete(dsoList);
-    }
-
-    public void deleteAll(){
-        getRepository().deleteAll();
-    }
-
-    public long count(){
-        return getRepository().count();
-    }
-
+    long count();
 }

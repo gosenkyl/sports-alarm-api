@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class TeamService extends BaseService<Team, TeamRepository>{
+public class TeamService extends BaseServiceImpl<Team, TeamRepository> {
 
     @Autowired
     public TeamService(TeamRepository repository){

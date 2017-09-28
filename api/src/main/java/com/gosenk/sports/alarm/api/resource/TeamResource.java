@@ -19,9 +19,6 @@ import java.util.List;
 public class TeamResource {
 
     @Autowired
-    private LeagueService leagueService;
-
-    @Autowired
     private TeamService teamService;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
