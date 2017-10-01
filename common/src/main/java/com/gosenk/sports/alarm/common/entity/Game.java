@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "game")
-public class Game extends BaseEntity{
+public class Game extends BaseAuditEntity {
 
     public Game(){
         super();
@@ -30,6 +30,9 @@ public class Game extends BaseEntity{
 
     @Column(name="date_time")
     private Long dateTime;
+
+    @Column(name="deleted")
+    private boolean deleted;
 
     public String getIdentifier() {
         return identifier;
@@ -80,5 +83,13 @@ public class Game extends BaseEntity{
 
     public void setDateTime(Long dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

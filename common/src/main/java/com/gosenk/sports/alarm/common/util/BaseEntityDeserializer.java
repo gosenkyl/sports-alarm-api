@@ -39,11 +39,6 @@ public class BaseEntityDeserializer extends StdDeserializer<BaseEntity> implemen
 
     private ApplicationContext applicationContext;
 
-    @PostConstruct
-    private void setApplicationContext(){
-        applicationContext = new ApplicationContextService().getContext();
-    }
-
     @Override
     public BaseEntity deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         String id = p.getText();

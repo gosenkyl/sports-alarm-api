@@ -13,7 +13,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "team")
-public class Team extends BaseEntity{
+public class Team extends BaseAuditEntity {
 
     public Team(){
         super();
@@ -50,6 +50,9 @@ public class Team extends BaseEntity{
     @Column(name = "image")
     private String image;
 
+    @Column(name = "deleted")
+    private boolean deleted;
+
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "homeTeam")
     @OrderBy("dateTime")
     private Set<Game> homeGames = new HashSet<>(0);
@@ -73,7 +76,7 @@ public class Team extends BaseEntity{
     }
 
     @JsonProperty("leagueId")
-    @JsonDeserialize(using= BaseEntityDeserializer.class)
+    @JsonDeserialize(using= LeagueDeserializer.class)
     public void setLeague(League league) {
         this.league = league;
     }
@@ -140,6 +143,14 @@ public class Team extends BaseEntity{
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 
     public Set<Game> getHomeGames() {
