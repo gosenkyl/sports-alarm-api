@@ -1,5 +1,7 @@
 package com.gosenk.sports.alarm.common.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
@@ -17,7 +19,7 @@ public class League extends BaseEntity {
 
     @Column(name = "sequence")
     private int sequence;
-
+    
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "league")
     @OrderBy("city, mascot")
     private Set<Team> teams = new HashSet<>(0);
