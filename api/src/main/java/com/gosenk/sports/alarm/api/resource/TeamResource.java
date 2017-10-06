@@ -1,16 +1,11 @@
 package com.gosenk.sports.alarm.api.resource;
 
 import com.gosenk.sports.alarm.common.entity.Team;
-import com.gosenk.sports.alarm.common.repository.LeagueRepository;
-import com.gosenk.sports.alarm.common.repository.TeamRepository;
-import com.gosenk.sports.alarm.common.service.LeagueService;
 import com.gosenk.sports.alarm.common.service.TeamService;
-import com.sun.xml.internal.ws.client.sei.ResponseBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import javax.xml.ws.Response;
 import java.util.List;
 
 @RestController

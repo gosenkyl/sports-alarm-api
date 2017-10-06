@@ -8,25 +8,11 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.gosenk.sports.alarm.common.entity.BaseEntity;
+import com.gosenk.sports.alarm.common.service.ApplicationContextService;
 import com.gosenk.sports.alarm.common.service.BaseService;
-import com.gosenk.sports.alarm.common.service.TeamService;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.access.BeanFactoryLocator;
-import org.springframework.beans.factory.access.BeanFactoryReference;
-import org.springframework.beans.factory.access.SingletonBeanFactoryLocator;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringBootConfiguration;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.logging.log4j2.SpringBootConfigurationFactory;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.orm.hibernate5.SpringSessionContext;
-import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.io.IOException;
 
-@Component
 public class BaseEntityDeserializer extends StdDeserializer<BaseEntity> implements ContextualDeserializer {
 
     public BaseEntityDeserializer() {
@@ -37,19 +23,14 @@ public class BaseEntityDeserializer extends StdDeserializer<BaseEntity> implemen
         super(vc);
     }
 
-    private ApplicationContext applicationContext;
-
     @Override
     public BaseEntity deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         String id = p.getText();
         try {
-            /*BeanFactoryLocator bfl = SingletonBeanFactoryLocator.getInstance();
-            BeanFactoryReference bf = bfl.useBeanFactory("SOME FACTORY");
-            BaseService baseService = (BaseService) bf.getFactory().getBean(handledType() + "Service");*/
+            String entityName = handledType().getSimpleName();
+            String beanName = entityName.substring(0, 1).toLowerCase() + entityName.substring(1, entityName.length()) + "Service";
 
-            //BaseService baseService = (BaseService) applicationContext.getAutowireCapableBeanFactory().getBean(handledType() + "Service");
-
-            BaseService baseService = (BaseService) applicationContext.getBean(handledType() + "Service");
+            BaseService baseService = (BaseService) ApplicationContextService.getApplicationContext().getAutowireCapableBeanFactory().getBean(beanName);
 
             return baseService.findOne(id);
         } catch (Exception e) {

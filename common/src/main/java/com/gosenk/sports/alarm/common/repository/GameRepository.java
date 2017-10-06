@@ -1,7 +1,6 @@
 package com.gosenk.sports.alarm.common.repository;
 
 import com.gosenk.sports.alarm.common.entity.Game;
-import com.gosenk.sports.alarm.common.entity.Team;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 

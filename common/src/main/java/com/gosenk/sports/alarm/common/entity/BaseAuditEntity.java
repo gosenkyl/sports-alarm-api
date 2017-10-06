@@ -1,9 +1,7 @@
 package com.gosenk.sports.alarm.common.entity;
 
 import javax.persistence.Column;
-import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import java.util.UUID;
 
 @MappedSuperclass
 public abstract class BaseAuditEntity extends BaseEntity {

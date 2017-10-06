@@ -1,9 +1,9 @@
 package com.gosenk.sports.alarm.dataextract.processor;
 
+import com.gosenk.sports.alarm.common.entity.DataReport;
 import com.gosenk.sports.alarm.common.entity.Game;
 import com.gosenk.sports.alarm.common.entity.League;
 import com.gosenk.sports.alarm.common.entity.Team;
-import com.gosenk.sports.alarm.common.entity.DataReport;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;

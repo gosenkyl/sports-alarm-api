@@ -5,7 +5,6 @@ import com.gosenk.sports.alarm.common.repository.DataReportRepository;
 import com.gosenk.sports.alarm.dataextract.processor.MLBProcessor;
 import com.gosenk.sports.alarm.dataextract.processor.NFLProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,7 +1,6 @@
 package com.gosenk.sports.alarm.api.resource;
 
 import com.gosenk.sports.alarm.common.entity.Game;
-import com.gosenk.sports.alarm.common.repository.GameRepository;
 import com.gosenk.sports.alarm.common.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;

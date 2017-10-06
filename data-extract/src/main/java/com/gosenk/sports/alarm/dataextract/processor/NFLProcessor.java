@@ -1,13 +1,10 @@
 package com.gosenk.sports.alarm.dataextract.processor;
 
+import com.gosenk.sports.alarm.common.entity.DataReport;
 import com.gosenk.sports.alarm.common.entity.Game;
 import com.gosenk.sports.alarm.common.entity.League;
 import com.gosenk.sports.alarm.common.entity.Team;
-import com.gosenk.sports.alarm.common.entity.DataReport;
-import com.gosenk.sports.alarm.common.repository.GameRepository;
 import com.gosenk.sports.alarm.dataextract.util.XMLParser;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
