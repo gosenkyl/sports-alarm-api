@@ -7,9 +7,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@EnableJpaRepositories(basePackages = {"com.gosenk.sports.alarm.common.repository"})
+@EnableJpaRepositories(basePackages = {"com.gosenk.sports.alarm.common.repository", "com.gosenk.sports.alarm.commonlight.repository"})
 @ComponentScan("com.gosenk.sports.alarm")
-@EntityScan(basePackages = "com.gosenk.sports.alarm.common.entity")
+@EntityScan(basePackages = {"com.gosenk.sports.alarm.common.entity", "com.gosenk.sports.alarm.commonlight.entity"})
 public class APIApplication {
     public static void main(String[] args) {
         SpringApplication.run(APIApplication.class, args);

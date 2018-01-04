@@ -1,6 +1,7 @@
 package com.gosenk.sports.alarm.common.repository;
 
 import com.gosenk.sports.alarm.common.entity.Team;
+import org.hibernate.annotations.NamedNativeQuery;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -16,4 +17,5 @@ public interface TeamRepository extends CrudRepository<Team, String>{
 
     @Query("SELECT t FROM Team t WHERE t.league.id = ?1 AND t.identifier = ?2")
     List<Team> findByLeagueIdentifier(String leagueId, String identifier);
+
 }

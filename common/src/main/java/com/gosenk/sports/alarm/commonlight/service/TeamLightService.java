@@ -1,7 +1,8 @@
-package com.gosenk.sports.alarm.common.service;
+package com.gosenk.sports.alarm.commonlight.service;
 
-import com.gosenk.sports.alarm.common.entity.Team;
-import com.gosenk.sports.alarm.common.repository.TeamRepository;
+import com.gosenk.sports.alarm.commonlight.entity.TeamLight;
+import com.gosenk.sports.alarm.commonlight.repository.TeamLightRepository;
+import com.gosenk.sports.alarm.common.service.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,18 +12,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class TeamService extends BaseServiceImpl<Team, TeamRepository> {
+public class TeamLightService extends BaseServiceImpl<TeamLight, TeamLightRepository> {
 
     @Autowired
-    public TeamService(TeamRepository repository){
+    public TeamLightService(TeamLightRepository repository){
         super(repository);
     }
 
-    public List<Team> findByLeague(String leagueId){
+    public List<TeamLight> findByLeague(String leagueId){
         return getRepository().findByLeague(leagueId);
     }
 
-    public List<Team> findByTeamIds(String teamIds){
+    public List<TeamLight> findByTeamIds(String teamIds){
         List<String> teamIdList = Arrays.asList(teamIds.split(","));
 
         if(teamIdList.isEmpty()){

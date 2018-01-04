@@ -71,9 +71,8 @@ public class MLBProcessor extends BaseProcessor implements Processor {
 
                         if (games.get("game") instanceof JSONArray) {
                             JSONArray gameList = games.getJSONArray("game");
-                            Iterator it = gameList.iterator();
-                            while (it.hasNext()) {
-                                JSONObject gameObj = (JSONObject) it.next();
+                            for (Object aGameList : gameList) {
+                                JSONObject gameObj = (JSONObject) aGameList;
                                 createOrUpdateGame(result, gameObj);
                             }
                         } else {

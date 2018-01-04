@@ -6,7 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 import java.util.UUID;
 
-abstract class BaseServiceImpl<T extends BaseEntity, R extends CrudRepository<T, String>> implements BaseService<T, R> {
+public abstract class BaseServiceImpl<T extends BaseEntity, R extends CrudRepository<T, String>> implements BaseService<T, R> {
 
     private final R repository;
 

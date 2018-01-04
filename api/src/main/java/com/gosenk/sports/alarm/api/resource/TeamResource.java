@@ -34,6 +34,11 @@ public class TeamResource {
         }
     }
 
+    @RequestMapping(value = "/ids", method = RequestMethod.GET)
+    public List<Team> getTeamsByIds(@RequestParam String ids){
+        return teamService.findByTeamIds(ids);
+    }
+
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
     public Team update(@RequestBody Team team){
         return teamService.save(team);

@@ -23,13 +23,13 @@ public class NFLProcessor extends BaseProcessor implements Processor {
 
     private final static String leagueId = "NFL";
 
-    private static String PREGAME = "Pregame";
+    /*private static String PREGAME = "Pregame";
     private static String HALFTIME = "Halftime";
     private static String OVERTIME= "Overtime";
     private static String FINAL = "Final";
-    private static String FINAL_OT = "Final Overtime";
+    private static String FINAL_OT = "Final Overtime";*/
 
-    private static String baseURL = "http://www.nfl.com/ajax/scorestrip?season=:YEAR&seasonType=:TYPE&week=:WEEK";
+    private final static String baseURL = "http://www.nfl.com/ajax/scorestrip?season=:YEAR&seasonType=:TYPE&week=:WEEK";
 
     private League league = null;
 

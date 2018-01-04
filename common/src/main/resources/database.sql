@@ -58,3 +58,39 @@ CREATE TRIGGER `sports_alarm`.`game_BEFORE_UPDATE` BEFORE UPDATE ON `game` FOR E
 BEGIN
 	SET NEW.modified = CURRENT_TIMESTAMP;
 END;
+
+
+
+-- FOREIGN KEYS
+ALTER TABLE `sports_alarm`.`team`
+ADD INDEX `fk_team_league_id_idx` (`league_id` ASC);
+ALTER TABLE `sports_alarm`.`team`
+ADD CONSTRAINT `fk_team_league_id`
+  FOREIGN KEY (`league_id`)
+  REFERENCES `sports_alarm`.`league` (`id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+ALTER TABLE `sports_alarm`.`game`
+ADD INDEX `fk_game_home_team_idx` (`home_team_id` ASC),
+ADD INDEX `fk_game_away_team_idx` (`away_team_id` ASC);
+ALTER TABLE `sports_alarm`.`game`
+ADD CONSTRAINT `fk_game_home_team`
+  FOREIGN KEY (`home_team_id`)
+  REFERENCES `sports_alarm`.`team` (`id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_game_away_team`
+  FOREIGN KEY (`away_team_id`)
+  REFERENCES `sports_alarm`.`team` (`id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+ALTER TABLE `sports_alarm`.`game`
+ADD INDEX `fk_game_league_idx` (`league_id` ASC);
+ALTER TABLE `sports_alarm`.`game`
+ADD CONSTRAINT `fk_game_league`
+  FOREIGN KEY (`league_id`)
+  REFERENCES `sports_alarm`.`league` (`id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
