@@ -16,7 +16,7 @@ public abstract class BaseProcessor {
     private LeagueRepository leagueRepository;
 
     @Autowired
-    private TeamRepository teamRepository;
+    protected TeamRepository teamRepository;
 
     @Autowired
     private GameRepository gameRepository;

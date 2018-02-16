@@ -36,3 +36,10 @@ task mlb(type:JavaExec){
 
     args = ["MLB"]
 }
+
+task nba(type:JavaExec){
+    classpath = sourceSets.main.runtimeClasspath
+    main = "com.gosenk.sports.alarm.dataextract.DataExtractApplication"
+
+    args = ["NBA"]
+}

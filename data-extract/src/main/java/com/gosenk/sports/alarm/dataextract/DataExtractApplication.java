@@ -3,6 +3,7 @@ package com.gosenk.sports.alarm.dataextract;
 import com.gosenk.sports.alarm.common.entity.DataReport;
 import com.gosenk.sports.alarm.common.repository.DataReportRepository;
 import com.gosenk.sports.alarm.dataextract.processor.MLBProcessor;
+import com.gosenk.sports.alarm.dataextract.processor.NBAProcessor;
 import com.gosenk.sports.alarm.dataextract.processor.NFLProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -14,9 +15,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.util.StringUtils;
 
 @SpringBootApplication
-@EnableJpaRepositories(basePackages = {"com.gosenk.sports.alarm.common.repository"})
+@EnableJpaRepositories(basePackages = {"com.gosenk.sports.alarm.common.repository", "com.gosenk.sports.alarm.commonlight.repository"})
 @ComponentScan("com.gosenk.sports.alarm")
-@EntityScan(basePackages = "com.gosenk.sports.alarm.common.entity")
+@EntityScan(basePackages = {"com.gosenk.sports.alarm.common.entity", "com.gosenk.sports.alarm.commonlight.entity"})
 public class DataExtractApplication implements CommandLineRunner {
 
     public static void main(String[] args) throws Exception {
@@ -28,6 +29,9 @@ public class DataExtractApplication implements CommandLineRunner {
 
     @Autowired
     private MLBProcessor mlbProcessor;
+
+    @Autowired
+    private NBAProcessor nbaProcessor;
 
     @Autowired
     private DataReportRepository dataReportRepository;
@@ -56,6 +60,9 @@ public class DataExtractApplication implements CommandLineRunner {
                     break;
                 case "MLB":
                     dataReport = mlbProcessor.process();
+                    break;
+                case "NBA":
+                    dataReport = nbaProcessor.process();
                     break;
                 default:
                     throw new RuntimeException(String.format("LEAGUE NOT FOUND %s", league));

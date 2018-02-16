@@ -4,9 +4,11 @@ package com.gosenk.sports.alarm.commonlight.repository;
 import com.gosenk.sports.alarm.commonlight.entity.TeamLight;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface TeamLightRepository extends CrudRepository<TeamLight, String>{
 
     @Query("SELECT t FROM TeamLight t WHERE t.leagueId = ?1 ORDER BY t.city ASC, t.mascot ASC")
