@@ -52,6 +52,9 @@ public class Team extends BaseAuditEntity {
     @Column(name = "deleted")
     private boolean deleted;
 
+    @Column(name = "venue_id")
+    private String venueId;
+
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "homeTeam")
     @OrderBy("dateTime")
     private Set<Game> homeGames = new HashSet<>(0);
@@ -166,5 +169,13 @@ public class Team extends BaseAuditEntity {
 
     public void setAwayGames(Set<Game> awayGames) {
         this.awayGames = awayGames;
+    }
+
+    public String getVenueId() {
+        return venueId;
+    }
+
+    public void setVenueId(String venueId) {
+        this.venueId = venueId;
     }
 }

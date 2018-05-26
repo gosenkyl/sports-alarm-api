@@ -34,7 +34,7 @@ public class MLBProcessor extends BaseProcessor implements Processor {
         this.league = getLeague(leagueId);
     }
 
-    public DataReport process() {
+    public DataReport process(boolean processAsSQL) {
 
         if(league == null){
             throw new RuntimeException(String.format("LEAGUE %s NOT FOUND", leagueId));

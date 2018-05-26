@@ -40,12 +40,16 @@ public class DataExtractApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         String leagues = args[0];
+        boolean processAsSQL = false;
+        if(args[1] != null){
+            processAsSQL = Boolean.valueOf(args[1]);
+        }
 
         System.out.println("Arguments " + leagues);
 
         if(StringUtils.isEmpty(leagues)){
             System.out.println("No Arg Passed!");
-            throw new RuntimeException("Need param [nfl,mlb]");
+            throw new RuntimeException("Need league param");
         }
 
         for(String league : leagues.split(",")) {
@@ -56,13 +60,13 @@ public class DataExtractApplication implements CommandLineRunner {
 
             switch (league.toUpperCase()) {
                 case "NFL":
-                    dataReport = nflProcessor.process();
+                    dataReport = nflProcessor.process(processAsSQL);
                     break;
                 case "MLB":
-                    dataReport = mlbProcessor.process();
+                    dataReport = mlbProcessor.process(processAsSQL);
                     break;
                 case "NBA":
-                    dataReport = nbaProcessor.process();
+                    dataReport = nbaProcessor.process(processAsSQL);
                     break;
                 default:
                     throw new RuntimeException(String.format("LEAGUE NOT FOUND %s", league));

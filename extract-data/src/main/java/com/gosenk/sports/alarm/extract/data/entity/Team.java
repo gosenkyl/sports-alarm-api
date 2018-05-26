@@ -1,55 +1,18 @@
-package com.gosenk.sports.alarm.commonlight.entity;
+package com.gosenk.sports.alarm.extract.data.entity;
 
-import com.gosenk.sports.alarm.common.entity.BaseAuditEntity;
+public class Team extends BaseEntity {
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
-@Entity
-@Table(name = "team")
-public class TeamLight extends BaseAuditEntity {
-
-    public TeamLight(){
-        super();
-    }
-
-    @Column(name = "identifier")
     private String identifier;
-
-    @Column(name = "league_id")
     private String leagueId;
-
-    @Column(name = "city")
     private String city;
-
-    @Column(name = "mascot")
     private String mascot;
-
-    @Column(name = "origin_city")
     private String originCity;
-
-    @Column(name = "origin_mascot")
     private String originMascot;
-
-    @Column(name = "primary_color")
     private String primaryColor;
-
-    @Column(name = "secondary_color")
     private String secondaryColor;
-
-    @Column(name = "is_new")
     private boolean isNew;
-
-    @Column(name = "image")
     private String image;
-
-    @Column(name = "deleted")
     private boolean deleted;
-
-    @Column(name = "venue_id")
-    private String venueId;
 
     public String getIdentifier() {
         return identifier;
@@ -139,11 +102,4 @@ public class TeamLight extends BaseAuditEntity {
         this.deleted = deleted;
     }
 
-    public String getVenueId() {
-        return venueId;
-    }
-
-    public void setVenueId(String venueId) {
-        this.venueId = venueId;
-    }
 }

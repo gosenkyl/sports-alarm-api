@@ -4,6 +4,6 @@ import com.gosenk.sports.alarm.common.entity.DataReport;
 
 public interface Processor {
 
-    DataReport process();
+    DataReport process(boolean processAsSQL);
 
 }

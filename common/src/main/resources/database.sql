@@ -19,6 +19,7 @@ CREATE TABLE `team` (
   `is_new` tinyint(1) DEFAULT NULL,
   `origin_city` varchar(45) DEFAULT NULL,
   `origin_mascot` varchar(45) DEFAULT NULL,
+  `venue_id` varchar(45) DEFAULT NULL,
   `image` varchar(45) DEFAULT NULL,
   `deleted` tinyint(1) NOT NULL DEFAULT 0,
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,

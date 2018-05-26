@@ -5,6 +5,5 @@ jar {
 
 dependencies {
     compile project(':common')
-
     compile("org.springframework.boot:spring-boot-starter-web")
 }

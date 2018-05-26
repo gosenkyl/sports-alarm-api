@@ -39,7 +39,7 @@ public class NBAProcessor extends BaseProcessor implements Processor {
 
     private Map<String, Team> teamMap = new HashMap<>();
 
-    public DataReport process() {
+    public DataReport process(boolean processAsSQL) {
 
         if(league == null){
             throw new RuntimeException(String.format("LEAGUE %s NOT FOUND", leagueId));

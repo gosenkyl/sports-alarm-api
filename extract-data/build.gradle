@@ -1,0 +1,43 @@
+jar {
+    baseName = 'sports-alarm-extract-data'
+    version =  '1.0.0'
+}
+
+springBoot {
+    mainClass = "com.gosenk.sports.alarm.extract.data.ExtractDataApplication"
+}
+
+dependencies {
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter'
+    compile group: 'org.springframework', name: 'spring-web'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.5'
+    compile group: 'org.json', name: 'json', version: '20160810'
+}
+
+task allLeagues(type:JavaExec){
+    classpath = sourceSets.main.runtimeClasspath
+    main = "com.gosenk.sports.alarm.extract.data.ExtractDataApplication"
+
+    args = ["NFL", "MLB"]
+}
+
+task nfl(type:JavaExec){
+    classpath = sourceSets.main.runtimeClasspath
+    main = "com.gosenk.sports.alarm.extract.data.ExtractDataApplication"
+
+    args = ["NFL"]
+}
+
+task mlb(type:JavaExec){
+    classpath = sourceSets.main.runtimeClasspath
+    main = "com.gosenk.sports.alarm.extract.data.ExtractDataApplication"
+
+    args = ["MLB"]
+}
+
+task nba(type:JavaExec){
+    classpath = sourceSets.main.runtimeClasspath
+    main = "com.gosenk.sports.alarm.extract.data.ExtractDataApplication"
+
+    args = ["NBA"]
+}
