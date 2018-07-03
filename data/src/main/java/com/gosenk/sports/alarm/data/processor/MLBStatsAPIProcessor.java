@@ -46,7 +46,14 @@ abstract class MLBStatsAPIProcessor extends BaseProcessor {
         JSONObject initial = new JSONObject(str);
         JSONArray teams = initial.getJSONArray("teams");
 
+        outputStream.write("\n".getBytes());
+        outputStream.write(baseTeamInsert.getBytes());
+
+        int index = 1;
+        int teamCount = teams.length();
         for (Object teamObj : teams) {
+            outputStream.write("\n".getBytes());
+
             JSONObject team = (JSONObject) teamObj;
 
             String id = team.get("id").toString();
@@ -72,7 +79,10 @@ abstract class MLBStatsAPIProcessor extends BaseProcessor {
 
             teamMap.put(id, entity);
 
-            persistTeam(entity, outputStream);
+            boolean isLast = teamCount == index;
+            persistTeam(entity, outputStream, isLast);
+
+            index++;
         }
 
         return teamMap;
@@ -84,6 +94,12 @@ abstract class MLBStatsAPIProcessor extends BaseProcessor {
         FileOutputStream outputStream = new FileOutputStream(filePrefix + "_games.sql");
         outputStream.write(("USE " + schemaName + ";").getBytes());
 
+        outputStream.write("\n".getBytes());
+        outputStream.write(baseTeamInsert.getBytes());
+        outputStream.write("\n".getBytes());
+
+        int teamIndex = 1;
+        int teamCount = teamMap.size();
         for(String teamId : teamMap.keySet()) {
 
             String str = new RestTemplateBuilder().build().getForObject(gamesEndpoint, String.class, leagueId, teamId, season, seasonStartDate, seasonEndDate);
@@ -91,6 +107,8 @@ abstract class MLBStatsAPIProcessor extends BaseProcessor {
             JSONObject initial = new JSONObject(str);
             JSONArray dates = initial.getJSONArray("dates");
 
+            int dateIndex = 1;
+            int dateCount = dates.length();
             for(Object dateObj : dates){
                 JSONObject date = (JSONObject) dateObj;
 
@@ -98,6 +116,8 @@ abstract class MLBStatsAPIProcessor extends BaseProcessor {
 
                 JSONArray games = date.getJSONArray("games");
 
+                int gameIndex = 1;
+                int gameCount = games.length();
                 for(Object gameObj : games) {
                     JSONObject game = (JSONObject) gameObj;
 
@@ -133,9 +153,15 @@ abstract class MLBStatsAPIProcessor extends BaseProcessor {
                     entity.setDateTime(gameTimeSDF.parse(gameDate).getTime());
                     entity.setDeleted(false);
 
-                    persistGame(entity, outputStream);
+                    boolean isLast = teamIndex == teamCount && dateIndex == dateCount && gameIndex == gameCount;
+
+                    persistGame(entity, outputStream, isLast);
+
+                    gameIndex++;
                 }
+                dateIndex++;
             }
+            teamIndex++;
         }
     }
 

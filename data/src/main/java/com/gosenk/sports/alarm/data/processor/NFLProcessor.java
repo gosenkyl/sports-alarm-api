@@ -47,9 +47,13 @@ public class NFLProcessor extends BaseProcessor implements Processor {
             String use = "USE " + schemaName + ";";
             teamOutputStream.write(use.getBytes());
             gameOutputStream.write(use.getBytes());
+            teamOutputStream.write("\n".getBytes());
+            gameOutputStream.write("\n".getBytes());
 
             teamOutputStream.write(baseTeamInsert.getBytes());
             gameOutputStream.write(baseGameInsert.getBytes());
+            teamOutputStream.write("\n".getBytes());
+            gameOutputStream.write("\n".getBytes());
 
             // Loop through season types
             for(String seasonType : types) {
@@ -89,7 +93,8 @@ public class NFLProcessor extends BaseProcessor implements Processor {
                         Node curNode = descNodes.item(i);
                         NamedNodeMap nodeMap = curNode.getAttributes();
 
-                        createOrUpdateTeamsGame(nodeMap, teamMap, teamOutputStream, gameOutputStream);
+                        boolean isLast = descNodes.getLength() -1 == i;
+                        createOrUpdateTeamsGame(nodeMap, teamMap, teamOutputStream, gameOutputStream, isLast);
                     }
 
                     week++;
@@ -103,7 +108,7 @@ public class NFLProcessor extends BaseProcessor implements Processor {
         }
     }
 
-    private void createOrUpdateTeamsGame(NamedNodeMap nodeMap, Map<String, TeamLight> teamMap, FileOutputStream teamOutputStream, FileOutputStream gameOutputStream) {
+    private void createOrUpdateTeamsGame(NamedNodeMap nodeMap, Map<String, TeamLight> teamMap, FileOutputStream teamOutputStream, FileOutputStream gameOutputStream, boolean isLast) throws Exception {
         String gameIdentifier = nodeMap.getNamedItem("gsis").getNodeValue();
 
         String eid = nodeMap.getNamedItem("eid").getNodeValue();
@@ -118,48 +123,33 @@ public class NFLProcessor extends BaseProcessor implements Processor {
 
         Long dateTimeMillis = parseTime(eid, time, amPM);
 
-        // TODO Create 2 team objects, pass in to below function, add to map
-        String homeTeamId = leagueId + "-" + homeTeamCity + "-" + homeTeamMascot;
+        String homeTeamId = (leagueId + "-" + homeTeamCity + "-" + homeTeamMascot).toUpperCase();
         TeamLight homeTeam = teamMap.get(homeTeamId);
 
         if(homeTeam == null) {
-            homeTeam = new TeamLight();
+            homeTeam = createTeam(homeTeamId, homeTeamCity, homeTeamMascot);
 
-            homeTeam.setId(homeTeamId);
-            homeTeam.setLeagueId(leagueId);
-            homeTeam.setCity(homeTeamCity);
-            homeTeam.setMascot(homeTeamMascot);
-            homeTeam.setIdentifier(homeTeamCity);
-            homeTeam.setDeleted(true);
-            homeTeam.setNew(true); // TODO
-            homeTeam.setOriginCity(homeTeamCity);
-            homeTeam.setOriginMascot(homeTeamMascot);
-            homeTeam.setVenueId(null);
+            // Since we can only infer teams by looking at games,
+            // we don't know if we are done processing teams or not
+            persistTeam(homeTeam, teamOutputStream, false);
+            teamOutputStream.write("\n".getBytes());
 
             teamMap.put(homeTeamId, homeTeam);
         }
 
-        String awayTeamId = leagueId + "-" + awayTeamCity + "-" + awayTeamMascot;
+        String awayTeamId = (leagueId + "-" + awayTeamCity + "-" + awayTeamMascot).toUpperCase();
         TeamLight awayTeam = teamMap.get(awayTeamId);
 
         if(awayTeam == null){
-            awayTeam.setId(leagueId + "-" + awayTeamCity + "-" + awayTeamMascot);
-            awayTeam.setLeagueId(leagueId);
-            awayTeam.setCity(awayTeamCity);
-            awayTeam.setMascot(awayTeamMascot);
-            awayTeam.setIdentifier(awayTeamCity);
-            awayTeam.setDeleted(true); // TODO
-            awayTeam.setNew(true); // TODO
-            awayTeam.setOriginCity(awayTeamCity);
-            awayTeam.setOriginMascot(awayTeamMascot);
-            awayTeam.setVenueId(null);
+            awayTeam = createTeam(awayTeamId, awayTeamCity, awayTeamMascot);
 
+            // Since we can only infer teams by looking at games,
+            // we don't know if we are done processing teams or not
+            persistTeam(awayTeam, teamOutputStream, false);
+            teamOutputStream.write("\n".getBytes());
 
             teamMap.put(awayTeamId, awayTeam);
         }
-
-        persistTeam(homeTeam, teamOutputStream);
-        persistTeam(awayTeam, teamOutputStream);
 
         GameLight game = new GameLight();
         game.setHomeTeamId(homeTeam.getId());
@@ -168,7 +158,24 @@ public class NFLProcessor extends BaseProcessor implements Processor {
         game.setIdentifier(gameIdentifier);
         game.setLeagueId(leagueId);
 
-        persistGame(game, gameOutputStream);
+        persistGame(game, gameOutputStream, isLast);
+    }
+
+    private TeamLight createTeam(String teamId, String city, String mascot){
+        TeamLight team = new TeamLight();
+
+        team.setId(teamId);
+        team.setLeagueId(leagueId);
+        team.setCity(city);
+        team.setMascot(mascot);
+        team.setIdentifier(city);
+        team.setDeleted(false); // TODO
+        team.setNew(true); // TODO
+        team.setOriginCity(city);
+        team.setOriginMascot(mascot);
+        team.setVenueId(null);
+
+        return team;
     }
 
     private Long parseTime(String eid, String time, String amPM){

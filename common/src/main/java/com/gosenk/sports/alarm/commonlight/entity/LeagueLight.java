@@ -11,33 +11,18 @@ import java.util.Set;
 @Table(name = "league")
 public class LeagueLight extends BaseEntity {
 
-    @Column(name="parse_from_date")
-    private Date parseFromDate;
-
-    @Column(name="parse_to_date")
-    private Date parseToDate;
-
     @Column(name = "sequence")
     private int sequence;
 
-    public Date getParseFromDate() {
-        return parseFromDate;
-    }
+    @Column(name = "description")
+    private String description;
 
-    public void setParseFromDate(Date parseFromDate) {
-        this.parseFromDate = parseFromDate;
-    }
-
-    public Date getParseToDate() {
-        return parseToDate;
-    }
-
-    public void setParseToDate(Date parseToDate) {
-        this.parseToDate = parseToDate;
-    }
 
     public int getSequence() {
         return sequence;
     }
 
+    public String getDescription() {
+        return description;
+    }
 }

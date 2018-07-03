@@ -4,6 +4,7 @@ import com.gosenk.sports.alarm.commonlight.entity.GameLight;
 import com.gosenk.sports.alarm.commonlight.entity.TeamLight;
 import com.gosenk.sports.alarm.commonlight.service.GameLightService;
 import com.gosenk.sports.alarm.commonlight.service.TeamLightService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.FileOutputStream;
@@ -13,7 +14,7 @@ abstract class BaseProcessor {
     protected boolean processAsSQL = true;
 
     protected final static String schemaName = "sports_alarm";
-    protected final static String baseTeamInsert = "INSERT INTO team (id, league_id, identifier, city, mascot, is_new, origin_city, origin_mascot, image, deleted) VALUES ";
+    protected final static String baseTeamInsert = "INSERT INTO team (id, league_id, identifier, city, mascot, is_new, origin_city, origin_mascot, venue_id, image, deleted) VALUES ";
     protected final static String baseGameInsert = "INSERT INTO game (id, home_team_id, away_team_id, date_time, identifier, league_id, deleted) VALUES ";
 
     @Autowired
@@ -22,7 +23,7 @@ abstract class BaseProcessor {
     @Autowired
     protected GameLightService gameLightService;
 
-    protected boolean persistTeam(TeamLight team, FileOutputStream outputStream){
+    protected boolean persistTeam(TeamLight team, FileOutputStream outputStream, boolean isLast){
         TeamLight persistedEntity = teamLightService.findById(team.getId());
         boolean teamFound = persistedEntity != null;
         try {
@@ -32,7 +33,7 @@ abstract class BaseProcessor {
                 if(false){
                     updateTeamSQL(persistedEntity, team, outputStream);
                 } else {
-                    insertTeamSQL(team, outputStream);
+                    insertTeamSQL(team, outputStream, isLast);
                 }
             } else {
                 System.out.println("UPDATE NOT IMPLEMENTED! - " + team.getIdentifier());
@@ -46,7 +47,7 @@ abstract class BaseProcessor {
         return teamFound;
     }
 
-    protected boolean persistGame(GameLight game, FileOutputStream outputStream){
+    protected boolean persistGame(GameLight game, FileOutputStream outputStream, boolean isLast){
         GameLight persistedEntity = gameLightService.findById(game.getId());
         boolean gameFound = persistedEntity != null;
 
@@ -57,7 +58,7 @@ abstract class BaseProcessor {
                 if(false){
                     updateGameSQL(persistedEntity, game, outputStream);
                 } else {
-                    insertGameSQL(game, outputStream);
+                    insertGameSQL(game, outputStream, isLast);
                 }
             } else {
                 System.out.println("UPDATE NOT IMPLEMENTED! - " + game.getIdentifier());
@@ -83,9 +84,8 @@ abstract class BaseProcessor {
                 || before.getDeleted() != after.getDeleted();
     }
 
-    protected void insertTeamSQL(TeamLight entity, FileOutputStream outputStream) throws Exception {
-        String insert = baseTeamInsert
-                + "("
+    protected void insertTeamSQL(TeamLight entity, FileOutputStream outputStream, boolean isLast) throws Exception {
+        String insert = "("
                 + surroundWithSingleQuotes(entity.getId())
                 + surroundWithSingleQuotes(entity.getLeagueId())
                 + surroundWithSingleQuotes(entity.getIdentifier())
@@ -94,9 +94,13 @@ abstract class BaseProcessor {
                 + entity.getIsNew() + ","
                 + surroundWithSingleQuotes(entity.getOriginCity())
                 + surroundWithSingleQuotes(entity.getOriginMascot())
+                + surroundWithSingleQuotes(entity.getVenueId())
                 + surroundWithSingleQuotes(entity.getImage())
                 + entity.getDeleted()
-                + "),";
+                + ")";
+
+        if(!isLast) { insert += ","; }
+        else { insert += ";"; }
 
         outputStream.write(insert.getBytes());
     }
@@ -115,9 +119,8 @@ abstract class BaseProcessor {
                 || before.getDeleted() != after.getDeleted();
     }
 
-    protected void insertGameSQL(GameLight entity, FileOutputStream outputStream) throws Exception {
-        String insert = baseGameInsert
-                + "("
+    protected void insertGameSQL(GameLight entity, FileOutputStream outputStream, boolean isLast) throws Exception {
+        String insert = "("
                 + surroundWithSingleQuotes(entity.getId())
                 + surroundWithSingleQuotes(entity.getHomeTeamId())
                 + surroundWithSingleQuotes(entity.getAwayTeamId())
@@ -125,7 +128,10 @@ abstract class BaseProcessor {
                 + surroundWithSingleQuotes(entity.getIdentifier())
                 + surroundWithSingleQuotes(entity.getLeagueId())
                 + entity.getDeleted()
-                + "),";
+                + ")";
+
+        if(!isLast) { insert += ","; }
+        else { insert += ";"; }
 
         outputStream.write(insert.getBytes());
     }
@@ -139,8 +145,7 @@ abstract class BaseProcessor {
     }
 
     protected String surroundWithSingleQuotes(String property, boolean includeComma){
-        String str = "'" + property + "'";
-
+        String str = StringUtils.isNotEmpty(property) ? "'" + property + "'" : null;
         return includeComma ? str + "," : str;
     }
 }

@@ -1,8 +1,8 @@
 -- NFL
-INSERT INTO league (id, sequence) VALUES ('NFL', 1);
+INSERT INTO league (id, sequence, description) VALUES ('NFL', 1, 'NFL');
 -- MLB
-INSERT INTO league (id, sequence) VALUES ('1', 2);
+INSERT INTO league (id, sequence, description) VALUES ('1', 2, 'MLB');
 -- NBA
-INSERT INTO league (id, sequence) VALUES ('5248', 3);
+INSERT INTO league (id, sequence, description) VALUES ('5248', 3, 'NBA');
 -- NHL
-INSERT INTO league (id, sequence) VALUES ('5150', 4);
+INSERT INTO league (id, sequence, description) VALUES ('5150', 4, 'NHL');

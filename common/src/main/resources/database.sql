@@ -1,12 +1,13 @@
-CREATE database `sports_alarm`;
+CREATE DATABASE `sports_alarm` /*!40100 DEFAULT CHARACTER SET utf8 */;
 
 CREATE TABLE `league` (
   `id` varchar(36) NOT NULL,
-  `parse_from_date` int(11) DEFAULT NULL,
-  `parse_to_date` int(11) DEFAULT NULL,
-  `sequence` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `sequence` int(11) NOT NULL,
+  `description` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `description_UNIQUE` (`description`),
+  UNIQUE KEY `sequence_UNIQUE` (`sequence`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `team` (
   `id` varchar(36) NOT NULL,
@@ -25,7 +26,7 @@ CREATE TABLE `team` (
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `game` (
   `id` varchar(36) NOT NULL,
@@ -38,7 +39,7 @@ CREATE TABLE `game` (
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `data_report` (
   `id` varchar(36) NOT NULL,
@@ -48,7 +49,7 @@ CREATE TABLE `data_report` (
   `insert_count` int(11) DEFAULT NULL,
   `total_count` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TRIGGER `sports_alarm`.`team_BEFORE_UPDATE` BEFORE UPDATE ON `team` FOR EACH ROW
 BEGIN
