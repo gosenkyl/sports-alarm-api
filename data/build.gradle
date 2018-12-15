@@ -1,10 +1,9 @@
+apply plugin: 'application'
+mainClassName = "com.gosenk.sports.alarm.data.DataApplication"
+
 jar {
     baseName = 'data'
     version =  '1.0.0'
-}
-
-springBoot {
-    mainClass = "com.gosenk.sports.alarm.data.DataApplication"
 }
 
 dependencies {

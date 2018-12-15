@@ -1,6 +1,3 @@
-bootRepackage.enabled = false
-findMainClass.enabled = false
-
 jar {
     baseName = 'sports-alarm-common'
     version =  '1.0.0'

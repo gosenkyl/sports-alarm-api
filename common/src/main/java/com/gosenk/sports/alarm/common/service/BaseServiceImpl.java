@@ -23,7 +23,7 @@ public abstract class BaseServiceImpl<T extends BaseEntity, R extends CrudReposi
         if (id == null) {
             return null;
         } else {
-            return getRepository().findOne(id);
+            return getRepository().findById(id).orElse(null);
         }
     }
 
@@ -40,7 +40,7 @@ public abstract class BaseServiceImpl<T extends BaseEntity, R extends CrudReposi
     }*/
 
     public T findOne(String id){
-        return getRepository().findOne(id);
+        return getRepository().findById(id).orElse(null);
     }
 
     public T save(T dso) {
@@ -51,11 +51,11 @@ public abstract class BaseServiceImpl<T extends BaseEntity, R extends CrudReposi
     }
 
     public List<T> save(Iterable<T> dsoList){
-        return (List<T>) getRepository().save(dsoList);
+        return (List<T>) getRepository().saveAll(dsoList);
     }
 
     public void delete(String id){
-        getRepository().delete(id);
+        getRepository().deleteById(id);
     }
 
     public void delete(T dso) {
@@ -63,7 +63,7 @@ public abstract class BaseServiceImpl<T extends BaseEntity, R extends CrudReposi
     }
 
     public void delete(List<T> dsoList){
-        getRepository().delete(dsoList);
+        getRepository().deleteAll(dsoList);
     }
 
     public void deleteAll(){

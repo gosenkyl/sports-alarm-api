@@ -95,7 +95,7 @@ abstract class MLBStatsAPIProcessor extends BaseProcessor {
         outputStream.write(("USE " + schemaName + ";").getBytes());
 
         outputStream.write("\n".getBytes());
-        outputStream.write(baseTeamInsert.getBytes());
+        outputStream.write(baseGameInsert.getBytes());
         outputStream.write("\n".getBytes());
 
         int teamIndex = 1;

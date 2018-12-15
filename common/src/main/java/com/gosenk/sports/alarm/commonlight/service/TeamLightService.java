@@ -30,6 +30,6 @@ public class TeamLightService extends BaseServiceImpl<TeamLight, TeamLightReposi
             return new ArrayList<>();
         }
 
-        return teamIdList.stream().map(id -> getRepository().findOne(id)).collect(Collectors.toList());
+        return teamIdList.stream().map(id -> getRepository().findById(id).orElse(null)).collect(Collectors.toList());
     }
 }
